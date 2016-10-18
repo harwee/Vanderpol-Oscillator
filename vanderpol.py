@@ -19,4 +19,8 @@ x = [ele[0] for ele in solution]
 y = [ele[1] for ele in solution]
 plt.plot(t,x)
 plt.plot(t,y)
+plt.xlabel('t')
+plt.ylabel('x  y')
+plt.legend(('x','y'))
 plt.show()
+
