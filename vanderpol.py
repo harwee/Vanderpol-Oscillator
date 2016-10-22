@@ -29,18 +29,22 @@ if __name__ == "__main__":
 	x0 = [1,2]
 	t = np.linspace(0,100,1000)
 
-	
-
 	solution = odeint(vanderpol_func,x0,t)
 
 	fig = plt.figure()
 	ax = plt.axes(xlim=(np.amin(t), np.amax(t)+0.1), ylim=(np.amin(solution)-0.1, np.amax(solution)+0.1))
 
-	line1, = ax.plot([],[])
-	line2, = ax.plot([],[])
+	line1, = ax.plot([],[], label="x")
+	line2, = ax.plot([],[], label="y=dx/dt")
+	plt.legend(handles=[line1, line2])
+	plt.title('Van der Pol oscillator')
+	plt.xlabel('time')
+	plt.ylabel('Variation of x and dx/dt')
 
 	x = solution[:,0]
+
 	y = solution[:,1]
 
 	ani = animation.FuncAnimation(fig, animate, np.arange(len(t)), init_func=init, blit=True)
-	ani.save('vanderpol.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+	ani.save('vanderpol_130010051.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+	fig.savefig('vanderpol_130010051.png')
