@@ -5,9 +5,8 @@ import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 from matplotlib import animation
 
-mu = 1
-
 def vanderpol_func(X,t): 
+	mu = 1
 	x, y = tuple(X)
 	dxdt = y
 	dydt = mu*(1.0-x*x)*y-x
