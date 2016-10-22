@@ -6,48 +6,40 @@ from scipy.integrate import odeint
 from matplotlib import animation
 
 mu = 1
+
 def vanderpol_func(X,t): 
 	x, y = tuple(X)
 	dxdt = y
 	dydt = mu*(1.0-x*x)*y-x
 	return [dxdt,dydt]
 
-x0 = [1,2]
-t = np.linspace(0,100,1000)
-
-solution = odeint(vanderpol_func,x0,t)
-
-
-#adding plotting functions
-x = [ele[0] for ele in solution]
-y = [ele[1] for ele in solution]
-"""
-plt.plot(t,x)
-plt.plot(t,y)
-plt.xlabel('t')
-plt.ylabel('x  y')
-plt.legend(('x','y'))
-plt.savefig('vanderpol.png')
-"""
-#animation support
-fig = plt.figure()
-l, = plt.plot([], [], 'k-o')
-
-plt.show()
-def anim_init():
-    l.set_data([], [])
-    return l,
-
 def animate(i):
-	for index,ele in enumerate(solution):
-		l.set_data(t[index], ele[0])
+	line1.set_data(t[:i],x[:i])
+	line2.set_data(t[:i],y[:i])
+	return line1, line2,
 
-anim = animation.FuncAnimation(fig, animate, init_func=anim_init,
-                               frames=200, interval=20, blit=False)
-anim.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+def init():
+	line1, = ax.plot([],[])
+	line2, = ax.plot([],[])
+	line1.set_ydata(np.ma.array(t, mask=True))
+	line2.set_ydata(np.ma.array(t, mask=True))
+	return line1, line2,
 
-metadata = dict(title='Vanderpol', artist='130010051', comment='Vanderpol evolution')
-
-    
 
 
+if __name__ == "__main__":
+	x0 = [1,2]
+	t = np.linspace(0,100,1000)
+
+
+	solution = odeint(vanderpol_func,x0,t)
+
+	fig = plt.figure()
+	ax = plt.axes(xlim=(np.amin(t), np.amax(t)+0.1), ylim=(np.amin(solution)-0.1, np.amax(solution)+0.1))
+
+
+	x = solution[:,0]
+	y = solution[:,1]
+
+	ani = animation.FuncAnimation(fig, animate, np.arange(len(t)), init_func=init, blit=True)
+	ani.save('vanderpol.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
