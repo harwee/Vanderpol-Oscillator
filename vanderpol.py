@@ -18,8 +18,7 @@ def animate(i):
 	return line1, line2,
 
 def init():
-	line1, = ax.plot([],[])
-	line2, = ax.plot([],[])
+	
 	line1.set_ydata(np.ma.array(t, mask=True))
 	line2.set_ydata(np.ma.array(t, mask=True))
 	return line1, line2,
@@ -30,12 +29,15 @@ if __name__ == "__main__":
 	x0 = [1,2]
 	t = np.linspace(0,100,1000)
 
+	
 
 	solution = odeint(vanderpol_func,x0,t)
 
 	fig = plt.figure()
 	ax = plt.axes(xlim=(np.amin(t), np.amax(t)+0.1), ylim=(np.amin(solution)-0.1, np.amax(solution)+0.1))
 
+	line1, = ax.plot([],[])
+	line2, = ax.plot([],[])
 
 	x = solution[:,0]
 	y = solution[:,1]
