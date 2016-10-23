@@ -7,3 +7,6 @@ topdf: main ../output/vanderpol_130010051.png ../source/vanderpol_130010051.tex
 
 main: 
 	python vanderpol.py
+
+test:
+	python test.py
